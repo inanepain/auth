@@ -1,0 +1,41 @@
+{
+	"name" : "inanepain/auth",
+	"description" : "One time Password is a simple class the create and validate pin/QR for a time limited password",
+	"type" : "library",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Philip Michael Raab",
+			"email" : "peep@inane.co.za",
+			"role" : "Developer"
+		}
+	],
+	"homepage" : "http://inane.co.za",
+	"support" : {
+		"email" : "peep@inane.co.za",
+		"issues" : "http://inane.co.za"
+	},
+	"keywords" : [
+		"authentication",
+		"OTP",
+		"two-factor",
+		"2FA"
+	],
+	"autoload" : {
+		"psr-4" : {
+			"Inane\\Authentication\\" : "src/"
+		}
+	},
+	"config": {
+        "preferred-install" : "dist",
+		"optimize-autoloader" : true,
+		"discard-changes" : true,
+		"sort-packages": true
+    },
+	"minimum-stability" : "stable",
+	"prefer-stable": true,
+	"require" : {
+		"php" : ">=8.0"
+	},
+	"require-dev": {
+    }
+}
