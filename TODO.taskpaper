@@ -1,0 +1,10 @@
+Inane\Authentication
+	Things to help you tell them and it's true. Trust me.
+	General:
+		- restructure classes
+	Token:
+		Creates or loads a secret. Uses google charts for qrcode image
+		- add get for otpauth schema @plugin
+			qrencode: @plugin
+				console qrcode generator
+				- add support for `qrencode`

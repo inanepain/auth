@@ -1,8 +1,24 @@
 <?php
 
+/**
+ * Inane\Auth
+ *
+ * Utilities revolving around identity.
+ *
+ * PHP version 8
+ *
+ * @package Owner\Project
+ * @author Philip Michael Raab<peep@inane.co.za>
+ *
+ * @license MIT
+ * @license https://raw.githubusercontent.com/CathedralCode/Builder/develop/LICENSE MIT License
+ *
+ * @copyright 2013-2022 Philip Michael Raab <peep@inane.co.za>
+ */
+
 declare(strict_types=1);
 
-namespace Inane\Authentication\TwoFactor;
+namespace Inane\Auth\TwoFactor;
 
 use Stringable;
 
