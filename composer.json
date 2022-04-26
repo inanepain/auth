@@ -10,11 +10,13 @@
 		}
 	],
 	"homepage" : "http://inane.co.za",
+	"readme": "README.md",
 	"support" : {
 		"email" : "peep@inane.co.za",
 		"issues" : "http://inane.co.za"
 	},
 	"keywords" : [
+		"inane",
 		"authentication",
 		"OTP",
 		"two-factor",
@@ -31,8 +33,6 @@
 		"discard-changes" : true,
 		"sort-packages": true
     },
-	"minimum-stability" : "stable",
-	"prefer-stable": true,
 	"require" : {
 		"php" : ">=8.0"
 	},
