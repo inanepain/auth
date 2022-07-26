@@ -1,5 +1,7 @@
 # Inanepain: Authentication
 
+> $Id$ ($Date$)
+
 Stuff to help with or add to authentication.
 
 ## Two Factor Authentication
@@ -27,4 +29,3 @@ $imgUrl = $token->getQRCodeUrl();
 // OR
 $imgBase64 = $token->getImageBase64();
 ```
-

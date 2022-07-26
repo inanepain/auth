@@ -1,0 +1,3 @@
+# Changelog: Auth
+
+> $Id$ ($Date$)
