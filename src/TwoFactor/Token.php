@@ -1,19 +1,20 @@
 <?php
 
 /**
- * Inane\Auth
+ * Inane
  *
- * Utilities revolving around identity.
+ * Auth
  *
- * PHP version 8
+ * PHP version 8.1
  *
- * @package Owner\Project
  * @author Philip Michael Raab<peep@inane.co.za>
+ * @package Inane\Auth
  *
- * @license MIT
- * @license https://raw.githubusercontent.com/CathedralCode/Builder/develop/LICENSE MIT License
+ * @license UNLICENSE
+ * @license https://github.com/inanepain/auth/raw/develop/UNLICENSE UNLICENSE
  *
- * @copyright 2013-2022 Philip Michael Raab <peep@inane.co.za>
+ * @version $Id$
+ * $Date$
  */
 
 declare(strict_types=1);

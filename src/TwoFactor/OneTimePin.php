@@ -1,19 +1,20 @@
 <?php
 
 /**
- * Inane\Auth
+ * Inane
  *
- * Utilities revolving around identity.
+ * Auth
  *
- * PHP version 8
+ * PHP version 8.1
  *
- * @package Owner\Project
  * @author Philip Michael Raab<peep@inane.co.za>
+ * @package Inane\Auth
  *
- * @license MIT
- * @license https://raw.githubusercontent.com/CathedralCode/Builder/develop/LICENSE MIT License
+ * @license UNLICENSE
+ * @license https://github.com/inanepain/auth/raw/develop/UNLICENSE UNLICENSE
  *
- * @copyright 2013-2022 Philip Michael Raab <peep@inane.co.za>
+ * @version $Id$
+ * $Date$
  */
 
 declare(strict_types=1);
@@ -104,7 +105,7 @@ class OneTimePin {
     ];
 
     /**
-     * OneTimePin
+     * OneTimePin constructor
      *
      * @param null|Token $token
      */
@@ -128,16 +129,17 @@ class OneTimePin {
     /**
      *  Get token
      *
-     * @return Token the $token
+     * @return Token $token
      */
     public function getToken(): Token {
         return $this->token;
     }
 
     /**
-     * Set Token or generate if none supplied
+     * Set Token
+     *  If none supplied a new Token is generated
      *
-     * @param null|Token $token
+     * @param null|Token $token user token
      *
      * @return self
      */
@@ -148,9 +150,7 @@ class OneTimePin {
     }
 
     /**
-     * Verifies a user inputted otp against the current timestamp.
-     * Checks 4
-     * keys either side of the timestamp.
+     * Verifies user's otp against current timestamp
      *
      * @param string $otp - User specified key
      *
@@ -192,8 +192,7 @@ class OneTimePin {
     }
 
     /**
-     * Returns the current Unix Timestamp divided by the KEY_REGENERATION
-     * period.
+     * Returns current timestamp divided by KEY_REGENERATION period
      *
      * @return float
      */
@@ -202,15 +201,14 @@ class OneTimePin {
     }
 
     /**
-     * Takes the secret key and the timestamp and returns the one time
-     * password.
+     * Takes secret key and timestamp and returns one time password
      *
      * @param string $key - Secret key in binary form.
      * @param float $counter - Timestamp as returned by getTimestamp.
      *
-     * @return string
+     * @return string OTP
      */
-    private static function oathHotp(string $key, float $counter): string {
+    private static function oathOTP(string $key, float $counter): string {
         if (strlen($key) < 8) throw new Exception('Secret key is too short. Must be at least 16 base 32 characters');
 
         $bin_counter = pack('N*', 0) . pack('N*', $counter); // Counter must be 64-bit int
@@ -225,7 +223,7 @@ class OneTimePin {
      *
      * @param string $hash
      *
-     * @return int
+     * @return int OTP
      */
     private static function oathTruncate(string $hash): int {
         $offset = ord($hash[19]) & 0xf;
@@ -234,14 +232,12 @@ class OneTimePin {
     }
 
     /**
-     * Verifies a user inputted key against the current timestamp.
-     * Checks $window
-     * keys either side of the timestamp.
+     * Verifies user input key against current timestamp
      *
-     * @param string $b32seed
-     * @param string $key - User specified key
-     * @param int $window
-     * @param bool $useTimeStamp
+     * @param string $b32seed      - seed
+     * @param string $key          - user specified key
+     * @param int    $window       - the number of keys check on either side of timestamp
+     * @param bool   $useTimeStamp - use timestamp
      *
      * @return bool
      */
@@ -252,7 +248,7 @@ class OneTimePin {
 
         $binarySeed = static::base32Decode($b32seed);
 
-        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) if (static::oathHotp($binarySeed, $ts) == $key) return true;
+        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) if (static::oathOTP($binarySeed, $ts) == $key) return true;
 
         return false;
     }

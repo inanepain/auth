@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Inane: Auth
+ * Inane
  *
- * Utilities revolving around identity.
+ * Auth
  *
  * PHP version 8.1
  *
- * @package Inane\Auth
  * @author Philip Michael Raab<peep@inane.co.za>
+ * @package Inane\Auth
  *
  * @license UNLICENSE
- * @license https://github.com/inanepain/stdlib/raw/develop/UNLICENSE UNLICENSE
+ * @license https://github.com/inanepain/auth/raw/develop/UNLICENSE UNLICENSE
  *
  * @version $Id$
  * $Date$
