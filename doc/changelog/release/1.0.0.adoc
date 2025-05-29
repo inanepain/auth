@@ -1,0 +1,16 @@
+= 1.0.0 (2022 Sep 12)
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.0.0
+:revdate: 2025-09-12
+:copyright: Unlicense
+:keywords: nane, auth, authentication, OTP, two-factor, 2FA
+:experimental:
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* first complete release

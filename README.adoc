@@ -1,0 +1,59 @@
+= Auth
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:keywords: nane, auth, authentication, OTP, two-factor, 2FA
+:description: Authentication adapters for common use cases.
+:revnumber: 1.0.0
+:revdate: 2022-09-12
+:copyright: Unlicense
+:experimental:
+:doctype: book
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:sectanchors:
+:idprefix: topic-
+:idseparator: -
+
+version: $Id$ ($Date$)
+
+Authentication adapters for common use cases.
+
+== Install
+
+[source,shell]
+----
+$ composer require inanepain/auth
+----
+
+<<<
+
+== Two-Factor Authentication
+
+Generating and verifying tokens and pins.
+
+=== Generate Token
+
+[source,php]
+----
+$token = new \Inane\Authentication\TwoFactor\Token('Inane');
+echo "$token";
+----
+
+=== Verify OTP
+
+[source,php]
+----
+$otp = new \Inane\Authentication\TwoFactor\OneTimePin($token);
+$valid = $otp->verifyOTP('612777');
+----
+
+=== QRCode URL
+
+[source,php]
+----
+$imgUrl = $token->getQRCodeUrl();
+// OR
+$imgBase64 = $token->getImageBase64();
+----

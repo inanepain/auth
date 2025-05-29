@@ -1,31 +1,29 @@
-# Inanepain: Authentication
+# 
 
-> $Id$ ($Date$)
+version: $Id$ ($Date$)
 
-Stuff to help with or add to authentication.
+Authentication adapters for common use cases.
 
-## Two Factor Authentication
+# Install
+
+    $ composer require inanepain/auth
+
+# Two-Factor Authentication
 
 Generating and verifying tokens and pins.
 
-### Generate Token
+## Generate Token
 
-```php
-$token = new \Inane\Authentication\TwoFactor\Token('Inane');
-echo "$token";
-```
+    $token = new \Inane\Authentication\TwoFactor\Token('Inane');
+    echo "$token";
 
-### Verify OTP
+## Verify OTP
 
-```php
-$otp = new \Inane\Authentication\TwoFactor\OneTimePin($token);
-$valid = $otp->verifyOTP('612777');
-```
+    $otp = new \Inane\Authentication\TwoFactor\OneTimePin($token);
+    $valid = $otp->verifyOTP('612777');
 
-### QRCode URL
+## QRCode URL
 
-```php
-$imgUrl = $token->getQRCodeUrl();
-// OR
-$imgBase64 = $token->getImageBase64();
-```
+    $imgUrl = $token->getQRCodeUrl();
+    // OR
+    $imgBase64 = $token->getImageBase64();

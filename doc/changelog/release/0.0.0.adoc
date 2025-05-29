@@ -1,0 +1,19 @@
+= 1.0.9-dev (2025 May 29)
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 0.0.0
+:revdate: 2025-05-29
+:copyright: Unlicense
+:keywords: nane, auth, authentication, OTP, two-factor, 2FA
+:experimental:
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* update documentation: changelog
+* update documentation: readme
+* license: unlicense
+* current development...

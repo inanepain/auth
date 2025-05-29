@@ -1,0 +1,64 @@
+= Changelog: Auth
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.0.9-dev
+:revdate: 2025-05-29
+:revremark: -dev
+// :version-label: Version
+:copyright: Unlicense
+:keywords: nane, auth, authentication, OTP, two-factor, 2FA
+:experimental:
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+Version: $Id$ ($Date$)
+
+== History
+
+:leveloffset: +2
+
+= 1.0.9-dev (2025 May 29)
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 0.0.0
+:revdate: 2025-05-29
+:copyright: Unlicense
+:keywords: nane, auth, authentication, OTP, two-factor, 2FA
+:experimental:
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* update documentation: changelog
+* update documentation: readme
+* license: unlicense
+* current development...
+
+:leveloffset!:
+:leveloffset: +2
+
+= 1.0.0 (2022 Sep 12)
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:revnumber: 1.0.0
+:revdate: 2025-09-12
+:copyright: Unlicense
+:keywords: nane, auth, authentication, OTP, two-factor, 2FA
+:experimental:
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:sectnums!:
+:toc: auto
+:sectanchors:
+
+* first complete release
+
+:leveloffset!:
