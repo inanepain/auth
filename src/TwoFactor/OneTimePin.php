@@ -44,7 +44,7 @@ use const true;
  * Validate a otp pin against a Token (secret).
  *
  * @author philip
- * @version 0.2.0
+ * @version 0.3.0
  */
 class OneTimePin {
     /**
@@ -144,9 +144,29 @@ class OneTimePin {
      * @return self
      */
     public function setToken(?Token $token = null): self {
-        $this->token = $token ?? new Token();;
+        $this->token = $token ?? new Token();
 
         return $this;
+    }
+
+    /**
+     * Get one time pin
+     * 
+     * @since 0.3.0
+     *
+     * @return string the current one time pin
+     */
+    public function getOTP(): string {
+        $window = 4;
+        $timeStamp = static::getTimestamp();
+
+        $binarySeed = static::base32Decode($this->getToken()->getToken());
+
+        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) {
+            return static::oathOTP($binarySeed, $ts);
+        }
+
+        return '';
     }
 
     /**
@@ -170,7 +190,7 @@ class OneTimePin {
     private static function base32Decode(string $b32): string {
         $b32 = strtoupper($b32);
 
-        if (!preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match)) throw new Exception('Invalid characters in the base32 string.');
+        if (preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match) === false) throw new Exception('Invalid characters in the base32 string.');
 
         $l = strlen($b32);
         $n = 0;
