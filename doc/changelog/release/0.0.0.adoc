@@ -4,7 +4,6 @@
 :revnumber: 0.0.0
 :revdate: 2025-05-29
 :copyright: Unlicense
-:keywords: nane, auth, authentication, OTP, two-factor, 2FA
 :experimental:
 :hide-uri-scheme:
 :icons: font

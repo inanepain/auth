@@ -1,12 +1,13 @@
 = Changelog: Auth
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
+:description: Authentication adapters for common use cases.
+:keywords: inane, inanepain, library, auth, authentication, OTP, two-factor, 2FA
 :revnumber: 1.0.9-dev
 :revdate: 2025-05-29
 :revremark: -dev
 // :version-label: Version
 :copyright: Unlicense
-:keywords: nane, auth, authentication, OTP, two-factor, 2FA
 :experimental:
 :hide-uri-scheme:
 :icons: font
@@ -27,7 +28,6 @@ Version: $Id$ ($Date$)
 :revnumber: 0.0.0
 :revdate: 2025-05-29
 :copyright: Unlicense
-:keywords: nane, auth, authentication, OTP, two-factor, 2FA
 :experimental:
 :hide-uri-scheme:
 :icons: font
@@ -50,7 +50,6 @@ Version: $Id$ ($Date$)
 :revnumber: 1.0.0
 :revdate: 2025-09-12
 :copyright: Unlicense
-:keywords: nane, auth, authentication, OTP, two-factor, 2FA
 :experimental:
 :hide-uri-scheme:
 :icons: font

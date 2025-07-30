@@ -1,12 +1,12 @@
-# 
-
-version: $Id$ ($Date$)
+# ![icon](./icon.png) inanepain/auth
 
 Authentication adapters for common use cases.
 
 # Install
 
-    $ composer require inanepain/auth
+composer
+
+    composer require inanepain/auth
 
 # Two-Factor Authentication
 

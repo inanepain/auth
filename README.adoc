@@ -1,7 +1,7 @@
-= Auth
+= README: inanepain/auth
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
-:keywords: nane, auth, authentication, OTP, two-factor, 2FA
+:keywords: inane, inanepain, library, auth, authentication, OTP, two-factor, 2FA
 :description: Authentication adapters for common use cases.
 :revnumber: 1.0.0
 :revdate: 2022-09-12
@@ -15,17 +15,27 @@
 :sectanchors:
 :idprefix: topic-
 :idseparator: -
+:pkg-vendor: inanepain
+:pkg-name: auth
+:pkg-id: {pkg-vendor}/{pkg-name}
 
-version: $Id$ ($Date$)
+== image:./icon.png[title={pkg-id},25] {pkg-id}
 
-Authentication adapters for common use cases.
+{description}
 
-== Install
+<<<
 
+:leveloffset: +1
+
+= Install
+
+.composer
 [source,shell]
 ----
-$ composer require inanepain/auth
+composer require inanepain/auth
 ----
+
+:leveloffset!:
 
 <<<
 
