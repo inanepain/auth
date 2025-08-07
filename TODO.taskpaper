@@ -2,6 +2,7 @@ Inane\Authentication
 	Things to help identify who's who in the digital zoo.
 	General:
 		- restructure classes
+                - major rebuild
 	Token:
 		Creates or loads a secret. Uses google charts for qrcode image
 		- add get for otpauth schema @plugin
