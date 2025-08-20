@@ -1,20 +1,23 @@
 <?php
 
 /**
- * Inane
+ * Inane: Auth
  *
- * Auth
+ * Authentication adapters for common use cases.
  *
- * PHP version 8.1
+ * $Id$
+ * $Date$
  *
- * @author Philip Michael Raab<peep@inane.co.za>
- * @package Inane\Auth
+ * PHP version 8.4
+ *
+ * @author Philip Michael Raab<philip@cathedral.co.za>
+ * @package inanepain\ auth
+ * @category auth
  *
  * @license UNLICENSE
- * @license https://github.com/inanepain/auth/raw/develop/UNLICENSE UNLICENSE
+ * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @version $Id$
- * $Date$
+ * @version $version
  */
 
 declare(strict_types=1);
