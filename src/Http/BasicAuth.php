@@ -11,13 +11,13 @@
  * PHP version 8.4
  *
  * @author Philip Michael Raab<philip@cathedral.co.za>
- * @package inanepain\ auth
+ * @package inanepain\auth
  * @category auth
  *
  * @license UNLICENSE
  * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @version $version
+ * _version_ $version
  */
 
 declare(strict_types=1);
@@ -36,8 +36,6 @@ use const null;
 
 /**
  * Basic Authorisation
- *
- * @package Inane\Auth
  *
  * @version 1.0.0
  */

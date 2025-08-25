@@ -17,7 +17,7 @@
  * @license UNLICENSE
  * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @version $version
+ * _version_ $version
  */
 
 declare(strict_types=1);
@@ -46,7 +46,6 @@ use const true;
  *
  * Validate a otp pin against a Token (secret).
  *
- * @author philip
  * @version 0.3.0
  */
 class OneTimePin {
@@ -160,16 +159,7 @@ class OneTimePin {
      * @return string the current one time pin
      */
     public function getOTP(): string {
-        $window = 4;
-        $timeStamp = static::getTimestamp();
-
-        $binarySeed = static::base32Decode($this->getToken()->getToken());
-
-        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) {
-            return static::oathOTP($binarySeed, $ts);
-        }
-
-        return '';
+        return $this->oathOTP(self::base32Decode($this->getToken()->getToken()), self::getTimestamp());
     }
 
     /**
@@ -193,7 +183,7 @@ class OneTimePin {
     private static function base32Decode(string $b32): string {
         $b32 = strtoupper($b32);
 
-        if (preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match) === false) throw new Exception('Invalid characters in the base32 string.');
+        if (! preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match)) throw new \Exception('Invalid characters in the base32 string.');
 
         $l = strlen($b32);
         $n = 0;

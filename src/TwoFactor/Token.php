@@ -17,7 +17,7 @@
  * @license UNLICENSE
  * @license https://unlicense.org/UNLICENSE UNLICENSE
  *
- * @version $version
+ * _version_ $version
  */
 
 declare(strict_types=1);
@@ -40,7 +40,6 @@ use const true;
  *
  * Create a new TwoFactor Token (secret).
  *
- * @author philip
  * @version 0.2.0
  */
 class Token implements Stringable {
