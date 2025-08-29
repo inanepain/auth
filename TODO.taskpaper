@@ -1,5 +1,5 @@
-inanepain\Authentication
-  Things to help identify who's who in the digital zoo.
+inanepain/auth:
+Authentication adapters for common use cases.
   General:
     - restructure classes
                 - major rebuild
