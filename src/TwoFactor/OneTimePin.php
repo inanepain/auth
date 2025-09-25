@@ -54,12 +54,12 @@ class OneTimePin {
      *
      * I.E.: OTP is valid for two times OTP_REGENERATION
      */
-    const OTP_REGENERATION = 30;
+    private const OTP_REGENERATION = 30;
 
     /**
      * Length of the pin
      */
-    const OTP_LENGTH = 6;
+    private const OTP_LENGTH = 6;
 
     /**
      * Token
@@ -71,7 +71,7 @@ class OneTimePin {
      *
      * @var array
      */
-    private static array $lut = [
+    private const array lut = [
         'A' => 0,
         'B' => 1,
         'C' => 2,
@@ -182,7 +182,6 @@ class OneTimePin {
      */
     private static function base32Decode(string $b32): string {
         $b32 = strtoupper($b32);
-
         if (! preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match)) throw new \Exception('Invalid characters in the base32 string.');
 
         $l = strlen($b32);
@@ -192,7 +191,7 @@ class OneTimePin {
 
         for ($i = 0; $i < $l; $i++) {
             $n = $n << 5; // Move buffer left by 5 to make room
-            $n = $n + static::$lut[$b32[$i]]; // Add value into buffer
+            $n = $n + static::lut[$b32[$i]]; // Add value into buffer
             $j = $j + 5; // Keep track of number of bits in buffer
 
             if ($j >= 8) {

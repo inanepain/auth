@@ -43,33 +43,69 @@ use const true;
  * @version 0.2.0
  */
 class Token implements Stringable {
+    #region Constants
     /**
-     * @var string
+     * lower case alpha characters
+     * 
+     * @var string abcdefghijklmnopqrstuvwxyz
      */
-    protected static string $alpha = 'abcdefghijklmnopqrstuvwxyz';
+    protected const string alpha = 'abcdefghijklmnopqrstuvwxyz';
 
     /**
-     * @var string
+     * UPPER CASE ALPHA CHARACTERS
+     * 
+     * @var string ABCDEFGHIJKLMNOPQRSTUVWXYZ
      */
-    protected static string $alphaUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    protected const string alphaUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
-     * @var string
+     * numeric characters
+     * 
+     * @var string 0123456789
      */
-    protected static string $numeric = '0123456789';
+    protected const string numeric = '0123456789';
 
     /**
-     * @var string
+     * special characters
+     * 
+     * @var string .-+=_,!@$#*%<>[]{}
      */
-    protected static string $special = '.-+=_,!@$#*%<>[]{}';
+    protected const string special = '.-+=_,!@$#*%<>[]{}';
+    #endregion Constants
+
+    #region Character Flags
+    /**
+     * Use alpha chars
+     *
+     * @var bool
+     */
+    protected(set) bool $useAlpha = true;
 
     /**
-     * Token
+     * Use upper alpha chars
+     *
+     * @var bool
      */
-    private string $token;
+    protected(set) bool $useAlphaUpper = true;
 
     /**
-     * Char Pool
+     * Use numeric chars
+     *
+     * @var bool
+     */
+    protected(set) bool $useNumeric = true;
+
+    /**
+     * Use special chars
+     *
+     * @var bool
+     */
+    protected(set) bool $useSpecial = false;
+    #endregion Character Flags
+
+    #region Settings
+    /**
+     * Character Pool
      *
      * @var null|string
      */
@@ -81,50 +117,33 @@ class Token implements Stringable {
      * @var int
      */
     protected int $length = 16;
+    #endregion Settings
 
     /**
-     * Use alpha chars
-     *
-     * @var bool
+     * Token
+     * 
+     * @var string
      */
-    protected bool $useAlpha = true;
-
-    /**
-     * Use upper alpha chars
-     *
-     * @var bool
-     */
-    protected bool $useAlphaUpper = true;
-
-    /**
-     * Use numeric chars
-     *
-     * @var bool
-     */
-    protected bool $useNumeric = true;
-
-    /**
-     * Use special chars
-     *
-     * @var bool
-     */
-    protected bool $useSpecial = false;
+    private string $token {
+        get => isset($this->token) ? $this->token : ($this->token = $this->generateToken());
+        set => $this->token = $value;
+    }
 
     /**
      * Two Factor Authentication Token
      *
-     * @param string|null $token
-     * @param string $name
+     * @param string|null $token if null a new random token will be generated.
+     * @param string $name token name (default: Unknown).
      */
     public function __construct(
-        /**
-         * Token Name
-         */
-        private string $name = 'Unknown',
         /**
          * Token
          */
         ?string $token = null,
+        /**
+         * Token Name
+         */
+        private(set) string $name = 'Unknown',
     ) {
         if ($token) $this->token = $token;
     }
@@ -139,80 +158,72 @@ class Token implements Stringable {
     }
 
     /**
-     * gets/sets value for length
+     * Sets value for length
      *
-     * @param null|int $length
+     * @param int $length default: 16
      *
-     * @return int the $length
+     * @return static
      */
-    public function length(?int $length = null): int {
-        if (is_numeric($length) && $length > 7 && $length < 21) $this->length = $length;
+    public function length(int $length = 16): static {
+        if ($length > 7 && $length < 21) $this->length = $length;
 
-        return $this->length;
+        return $this;
     }
 
     /**
-     * get/set value for useAlpha
+     * Set value for useAlpha
      *
-     * @param null|bool $useAlpha
+     * @param bool $useAlpha default: true
      *
-     * @return boolean
+     * @return static
      */
-    public function useAlpha(?bool $useAlpha = null): bool {
-        if (is_bool($useAlpha) && $useAlpha != $this->useAlpha) {
-            $this->chars = null;
-            $this->useAlpha = $useAlpha;
-        }
+    public function useAlpha(bool $useAlpha = true): static {
+        $this->chars = null;
+        $this->useAlpha = $useAlpha;
 
-        return $this->useAlpha;
+        return $this;
     }
 
     /**
-     * get/set value for useAlphaUpper
+     * Set value for useAlphaUpper
      *
-     * @param null|bool $useAlphaUpper
+     * @param bool $useAlphaUpper default: true
      *
-     * @return boolean
+     * @return static
      */
-    public function useAlphaUpper(?bool $useAlphaUpper = null): bool {
-        if (is_bool($useAlphaUpper) && $useAlphaUpper != $this->useAlphaUpper) {
-            $this->chars = null;
-            $this->useAlphaUpper = $useAlphaUpper;
-        }
+    public function useAlphaUpper(bool $useAlphaUpper = true): static {
+        $this->chars = null;
+        $this->useAlphaUpper = $useAlphaUpper;
 
-        return $this->useAlphaUpper;
+        return $this;
     }
 
     /**
-     * get/set value for useNumeric
+     * Set value for useNumeric
      *
-     * @param null|bool $useNumeric
+     * @param bool $useNumeric default: true
      *
-     * @return boolean
+     * @return static
      */
-    public function useNumeric(?bool $useNumeric = null): bool {
-        if (is_bool($useNumeric) && $useNumeric != $this->useNumeric) {
-            $this->chars = null;
-            $this->useNumeric = $useNumeric;
-        }
+    public function useNumeric(bool $useNumeric = true): static {
+        $this->chars = null;
+        $this->useNumeric = $useNumeric;
 
-        return $this->useNumeric;
+        return $this;
     }
 
     /**
-     * get/set value for useSpecial
+     * Set value for useSpecial
      *
-     * @param null|bool $useSpecial
+     * @param bool $useSpecial default: false
      *
-     * @return boolean
+     * @return static
      */
-    public function useSpecial(?bool $useSpecial = null): bool {
-        if (is_bool($useSpecial) && $useSpecial != $this->useSpecial) {
-            $this->chars = null;
-            $this->useSpecial = $useSpecial;
-        }
+    public function useSpecial(bool $useSpecial = false): static {
+        $this->chars = null;
+        $this->useSpecial = $useSpecial;
 
-        return $this->useSpecial;
+        return $this;
     }
 
     /**
@@ -223,12 +234,17 @@ class Token implements Stringable {
      * @return string token
      */
     public function getToken(): string {
-        if (!isset($this->token)) $this->token = $this->generateToken();
-
         return $this->token;
     }
 
-    public function setToken(string $token): self {
+    /**
+     * Set Token
+     * 
+     * @param string $token
+     *
+     * @return static
+     */
+    public function setToken(string $token): static {
         $this->token = $token;
 
         return $this;
@@ -244,18 +260,30 @@ class Token implements Stringable {
     }
 
     /**
+     * Set Token Name
+     * 
+     * @param string $name
+     *
+     * @return static the $name
+     */
+    public function setName(string $name): static {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
      * Get chars to use for Token
      *
      * @return string valid chars
      */
     protected function chars(): string {
-        if (is_null($this->chars)) {
+        if ($this->chars === null) {
             $this->chars = '';
 
-            if ($this->useAlpha) $this->chars .= static::$alpha;
-            if ($this->useAlphaUpper) $this->chars .= static::$alphaUpper;
-            if ($this->useNumeric) $this->chars .= static::$numeric;
-            if ($this->useSpecial) $this->chars .= static::$special;
+            if ($this->useAlpha) $this->chars .= self::alpha;
+            if ($this->useAlphaUpper) $this->chars .= self::alphaUpper;
+            if ($this->useNumeric) $this->chars .= self::numeric;
+            if ($this->useSpecial) $this->chars .= self::special;
         }
         return $this->chars;
     }
