@@ -1,0 +1,69 @@
+= README: inanepain/auth
+:author: Philip Michael Raab
+:email: <philip@cathedral.co.za>
+:keywords: inane, inanepain, library, auth, authentication, OTP, two-factor, 2FA
+:description: Authentication adapters for common use cases.
+:revnumber: 1.1.0
+:revdate: 2022-11-20
+:copyright: Unlicense
+:experimental:
+:doctype: book
+:hide-uri-scheme:
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:sectanchors:
+:idprefix: topic-
+:idseparator: -
+:pkg-vendor: inanepain
+:pkg-name: auth
+:pkg-id: {pkg-vendor}/{pkg-name}
+
+== image:./icon.png[title={pkg-id},25] {pkg-id}
+
+{description}
+
+<<<
+
+:leveloffset: +1
+
+= Install
+
+.composer
+[source,shell]
+----
+composer require inanepain/auth
+----
+
+:leveloffset!:
+
+<<<
+
+== Two-Factor Authentication
+
+Generating and verifying tokens and pins.
+
+=== Generate Token
+
+[source,php]
+----
+$token = new \Inane\Authentication\TwoFactor\Token('Inane');
+echo "$token";
+----
+
+=== Verify OTP
+
+[source,php]
+----
+$otp = new \Inane\Authentication\TwoFactor\OneTimePin($token);
+$valid = $otp->verifyOTP('612777');
+----
+
+=== QRCode URL
+
+[source,php]
+----
+$imgUrl = $token->getQRCodeUrl();
+// OR
+$imgBase64 = $token->getImageBase64();
+----

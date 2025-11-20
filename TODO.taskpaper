@@ -1,0 +1,11 @@
+inanepain/auth:
+Authentication adapters for common use cases.
+  General:
+    - restructure classes
+                - major rebuild
+  Token:
+    Creates or loads a secret. Uses google charts for qrcode image
+    - add get for otpauth schema @plugin
+      qrencode: @plugin
+        console qrcode generator
+        - add support for `qrencode`

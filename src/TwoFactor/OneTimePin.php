@@ -1,9 +1,28 @@
 <?php
-/* vscode: vscode-fold=2 */
+
+/**
+ * Inane: Auth
+ *
+ * Authentication adapters for common use cases.
+ *
+ * $Id$
+ * $Date$
+ *
+ * PHP version 8.4
+ *
+ * @author Philip Michael Raab<philip@cathedral.co.za>
+ * @package inanepain\ auth
+ * @category auth
+ *
+ * @license UNLICENSE
+ * @license https://unlicense.org/UNLICENSE UNLICENSE
+ *
+ * _version_ $version
+ */
 
 declare(strict_types=1);
 
-namespace Inane\Authentication\TwoFactor;
+namespace Inane\Auth\TwoFactor;
 
 use Exception;
 
@@ -27,8 +46,7 @@ use const true;
  *
  * Validate a otp pin against a Token (secret).
  *
- * @author philip
- * @version 0.2.0
+ * @version 0.3.0
  */
 class OneTimePin {
     /**
@@ -36,12 +54,12 @@ class OneTimePin {
      *
      * I.E.: OTP is valid for two times OTP_REGENERATION
      */
-    const OTP_REGENERATION = 30;
+    private const OTP_REGENERATION = 30;
 
     /**
      * Length of the pin
      */
-    const OTP_LENGTH = 6;
+    private const OTP_LENGTH = 6;
 
     /**
      * Token
@@ -53,7 +71,7 @@ class OneTimePin {
      *
      * @var array
      */
-    private static array $lut = [
+    private const array lut = [
         'A' => 0,
         'B' => 1,
         'C' => 2,
@@ -89,7 +107,7 @@ class OneTimePin {
     ];
 
     /**
-     * OneTimePin
+     * OneTimePin constructor
      *
      * @param null|Token $token
      */
@@ -113,29 +131,39 @@ class OneTimePin {
     /**
      *  Get token
      *
-     * @return Token the $token
+     * @return Token $token
      */
     public function getToken(): Token {
         return $this->token;
     }
 
     /**
-     * Set Token or generate if none supplied
+     * Set Token
+     *  If none supplied a new Token is generated
      *
-     * @param null|Token $token
+     * @param null|Token $token user token
      *
      * @return self
      */
     public function setToken(?Token $token = null): self {
-        $this->token = $token ?? new Token();;
+        $this->token = $token ?? new Token();
 
         return $this;
     }
 
     /**
-     * Verifies a user inputted otp against the current timestamp.
-     * Checks 4
-     * keys either side of the timestamp.
+     * Get one time pin
+     * 
+     * @since 0.3.0
+     *
+     * @return string the current one time pin
+     */
+    public function getOTP(): string {
+        return $this->oathOTP(self::base32Decode($this->getToken()->getToken()), self::getTimestamp());
+    }
+
+    /**
+     * Verifies user's otp against current timestamp
      *
      * @param string $otp - User specified key
      *
@@ -154,8 +182,7 @@ class OneTimePin {
      */
     private static function base32Decode(string $b32): string {
         $b32 = strtoupper($b32);
-
-        if (!preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match)) throw new Exception('Invalid characters in the base32 string.');
+        if (! preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match)) throw new \Exception('Invalid characters in the base32 string.');
 
         $l = strlen($b32);
         $n = 0;
@@ -164,7 +191,7 @@ class OneTimePin {
 
         for ($i = 0; $i < $l; $i++) {
             $n = $n << 5; // Move buffer left by 5 to make room
-            $n = $n + static::$lut[$b32[$i]]; // Add value into buffer
+            $n = $n + static::lut[$b32[$i]]; // Add value into buffer
             $j = $j + 5; // Keep track of number of bits in buffer
 
             if ($j >= 8) {
@@ -177,8 +204,7 @@ class OneTimePin {
     }
 
     /**
-     * Returns the current Unix Timestamp divided by the KEY_REGENERATION
-     * period.
+     * Returns current timestamp divided by KEY_REGENERATION period
      *
      * @return float
      */
@@ -187,15 +213,14 @@ class OneTimePin {
     }
 
     /**
-     * Takes the secret key and the timestamp and returns the one time
-     * password.
+     * Takes secret key and timestamp and returns one time password
      *
      * @param string $key - Secret key in binary form.
      * @param float $counter - Timestamp as returned by getTimestamp.
      *
-     * @return string
+     * @return string OTP
      */
-    private static function oathHotp(string $key, float $counter): string {
+    private static function oathOTP(string $key, float $counter): string {
         if (strlen($key) < 8) throw new Exception('Secret key is too short. Must be at least 16 base 32 characters');
 
         $bin_counter = pack('N*', 0) . pack('N*', $counter); // Counter must be 64-bit int
@@ -210,7 +235,7 @@ class OneTimePin {
      *
      * @param string $hash
      *
-     * @return int
+     * @return int OTP
      */
     private static function oathTruncate(string $hash): int {
         $offset = ord($hash[19]) & 0xf;
@@ -219,14 +244,12 @@ class OneTimePin {
     }
 
     /**
-     * Verifies a user inputted key against the current timestamp.
-     * Checks $window
-     * keys either side of the timestamp.
+     * Verifies user input key against current timestamp
      *
-     * @param string $b32seed
-     * @param string $key - User specified key
-     * @param int $window
-     * @param bool $useTimeStamp
+     * @param string $b32seed      - seed
+     * @param string $key          - user specified key
+     * @param int    $window       - the number of keys check on either side of timestamp
+     * @param bool   $useTimeStamp - use timestamp
      *
      * @return bool
      */
@@ -237,7 +260,7 @@ class OneTimePin {
 
         $binarySeed = static::base32Decode($b32seed);
 
-        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) if (static::oathHotp($binarySeed, $ts) == $key) return true;
+        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) if (static::oathOTP($binarySeed, $ts) == $key) return true;
 
         return false;
     }
