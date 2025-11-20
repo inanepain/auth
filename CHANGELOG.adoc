@@ -3,8 +3,8 @@
 :email: <philip@cathedral.co.za>
 :description: Authentication adapters for common use cases.
 :keywords: inane, inanepain, library, auth, authentication, OTP, two-factor, 2FA
-:revnumber: 1.0.9-dev
-:revdate: 2025-05-29
+:revnumber: 1.1.0
+:revdate: 2025-11-20
 :revremark: -dev
 // :version-label: Version
 :copyright: Unlicense
@@ -16,30 +16,18 @@
 :toc: auto
 :sectanchors:
 
-Version: $Id$ ($Date$)
-
 == History
 
 :leveloffset: +2
 
-= 1.0.9-dev (2025 May 29)
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 0.0.0
-:revdate: 2025-05-29
-:copyright: Unlicense
-:experimental:
-:hide-uri-scheme:
-:icons: font
-:source-highlighter: highlight.js
-:sectnums!:
-:toc: auto
-:sectanchors:
+= 0.0.0 (2025 Nov 20)
+:revnumber: 1.1.0
+:revdate: 2025-11-20
 
 * update documentation: changelog
 * update documentation: readme
 * license: unlicense
-* current development...
+* *fix*: qr-code, lets you get base64 png.
 
 :leveloffset!:
 :leveloffset: +2

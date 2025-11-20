@@ -1,4 +1,4 @@
-= 1.0.9-dev (2025 May 29)
+0.0.0.adoc= 1.0.9-dev (2025 May 29)
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
 :revnumber: 0.0.0

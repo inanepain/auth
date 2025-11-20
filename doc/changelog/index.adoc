@@ -3,8 +3,8 @@
 :email: <philip@cathedral.co.za>
 :description: Authentication adapters for common use cases.
 :keywords: inane, inanepain, library, auth, authentication, OTP, two-factor, 2FA
-:revnumber: 1.0.9-dev
-:revdate: 2025-05-29
+:revnumber: 1.1.0
+:revdate: 2025-11-20
 :revremark: -dev
 // :version-label: Version
 :copyright: Unlicense
@@ -16,9 +16,7 @@
 :toc: auto
 :sectanchors:
 
-Version: $Id$ ($Date$)
-
 == History
 
-include::./release/0.0.0.adoc[leveloffset=+2]
+include::./release/1.1.0.adoc[leveloffset=+2]
 include::./release/1.0.0.adoc[leveloffset=+2]
