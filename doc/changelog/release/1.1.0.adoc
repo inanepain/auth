@@ -1,0 +1,8 @@
+= 0.0.0 (2025 Nov 20)
+:revnumber: 1.1.0
+:revdate: 2025-11-20
+
+* update documentation: changelog
+* update documentation: readme
+* license: unlicense
+* *fix*: qr-code, lets you get base64 png.
