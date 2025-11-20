@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 namespace Inane\Auth\TwoFactor;
 
+use QRcode;
 use Stringable;
 
 use function is_bool;
@@ -34,6 +35,8 @@ use function strlen;
 use function substr;
 use const false;
 use const true;
+
+require_once __DIR__ . '/../phpqrcode.php';
 
 /**
  * Token
@@ -310,7 +313,7 @@ class Token implements Stringable {
      *
      * @return string the QRCode url
      */
-    public function getQRCodeUrl(): string {
+    protected function getQRCodeUrl(): string {
         $url = 'http://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
 
         return $url;
@@ -322,8 +325,13 @@ class Token implements Stringable {
      * @return string base64 string of QRCode
      */
     public function getImageBase64(): string {
-        $url = $this->getQRCodeUrl();
-        $data = file_get_contents($url);
+	    $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
+
+	    $tmp = tempnam(sys_get_temp_dir(), 'qr-code-');
+	    QRcode::png($url, $tmp, QR_ECLEVEL_H, 10, 1);
+	    $data = file_get_contents($tmp);
+		unlink($tmp);
+
         $base64 = 'data:image/png;base64,' . base64_encode($data);
 
         return $base64;
