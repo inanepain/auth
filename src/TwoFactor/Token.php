@@ -36,8 +36,6 @@ use function substr;
 use const false;
 use const true;
 
-//require_once __DIR__ . '/../phpqrcode.php';
-
 /**
  * Token
  *
@@ -326,6 +324,6 @@ class Token implements Stringable {
      */
     public function getImageBase64(): string {
 	    $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
-		return new \Inane\Stdlib\QRObject($url)->getImageBase64();
+		return new \Inane\QR\QRObject($url)->getImageBase64();
     }
 }
