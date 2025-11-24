@@ -36,7 +36,7 @@ use function substr;
 use const false;
 use const true;
 
-require_once __DIR__ . '/../phpqrcode.php';
+//require_once __DIR__ . '/../phpqrcode.php';
 
 /**
  * Token
@@ -275,7 +275,7 @@ class Token implements Stringable {
     }
 
     /**
-     * Get chars to use for Token
+     * Get chars to use it for Token
      *
      * @return string valid chars
      */
@@ -326,14 +326,6 @@ class Token implements Stringable {
      */
     public function getImageBase64(): string {
 	    $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
-
-	    $tmp = tempnam(sys_get_temp_dir(), 'qr-code-');
-	    QRcode::png($url, $tmp, QR_ECLEVEL_H, 10, 1);
-	    $data = file_get_contents($tmp);
-		unlink($tmp);
-
-        $base64 = 'data:image/png;base64,' . base64_encode($data);
-
-        return $base64;
+		return new \Inane\Stdlib\QRObject($url)->getImageBase64();
     }
 }
