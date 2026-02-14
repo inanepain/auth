@@ -2,6 +2,6 @@
 
 .composer
 [source,shell]
-----
-composer require inanepain/auth
-----
+====
+composer require {pkg-id}
+====
