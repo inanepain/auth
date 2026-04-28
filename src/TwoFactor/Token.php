@@ -24,11 +24,9 @@ declare(strict_types=1);
 
 namespace Inane\Auth\TwoFactor;
 
-use QRcode;
+use Inane\QR\QRObject;
 use Stringable;
 
-use function is_bool;
-use function is_numeric;
 use function rand;
 use function str_shuffle;
 use function strlen;
@@ -47,28 +45,28 @@ class Token implements Stringable {
     #region Constants
     /**
      * lower case alpha characters
-     * 
+     *
      * @var string abcdefghijklmnopqrstuvwxyz
      */
     protected const string alpha = 'abcdefghijklmnopqrstuvwxyz';
 
     /**
      * UPPER CASE ALPHA CHARACTERS
-     * 
+     *
      * @var string ABCDEFGHIJKLMNOPQRSTUVWXYZ
      */
     protected const string alphaUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * numeric characters
-     * 
+     *
      * @var string 0123456789
      */
     protected const string numeric = '0123456789';
 
     /**
      * special characters
-     * 
+     *
      * @var string .-+=_,!@$#*%<>[]{}
      */
     protected const string special = '.-+=_,!@$#*%<>[]{}';
@@ -122,7 +120,7 @@ class Token implements Stringable {
 
     /**
      * Token
-     * 
+     *
      * @var string
      */
     private string $token {
@@ -240,7 +238,7 @@ class Token implements Stringable {
 
     /**
      * Set Token
-     * 
+     *
      * @param string $token
      *
      * @return static
@@ -262,7 +260,7 @@ class Token implements Stringable {
 
     /**
      * Set Token Name
-     * 
+     *
      * @param string $name
      *
      * @return static the $name
@@ -318,12 +316,12 @@ class Token implements Stringable {
     }
 
     /**
-     * QRCode as base64 image
+     * QRCode as a base64 image
      *
      * @return string base64 string of QRCode
      */
     public function getImageBase64(): string {
-	    $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
-		return new \Inane\QR\QRObject($url)->getImageBase64();
+        $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
+        return new QRObject($url)->getImageBase64();
     }
 }
