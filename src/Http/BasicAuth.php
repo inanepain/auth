@@ -8,7 +8,7 @@
  * $Id$
  * $Date$
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @author Philip Michael Raab<philip@cathedral.co.za>
  * @package inanepain\auth
@@ -32,6 +32,7 @@ use function base64_decode;
 use function explode;
 use function is_null;
 use function str_contains;
+
 use const null;
 
 /**

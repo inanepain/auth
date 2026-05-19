@@ -8,7 +8,7 @@
  * $Id$
  * $Date$
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @author Philip Michael Raab<philip@cathedral.co.za>
  * @package inanepain\ auth
@@ -37,6 +37,7 @@ use function preg_match;
 use function str_pad;
 use function strlen;
 use function strtoupper;
+
 use const false;
 use const STR_PAD_LEFT;
 use const true;
@@ -153,7 +154,7 @@ class OneTimePin {
 
     /**
      * Get one time pin
-     * 
+     *
      * @since 0.3.0
      *
      * @return string the current one time pin

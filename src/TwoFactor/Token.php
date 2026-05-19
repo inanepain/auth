@@ -8,7 +8,7 @@
  * $Id$
  * $Date$
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @author Philip Michael Raab<philip@cathedral.co.za>
  * @package inanepain\ auth
@@ -31,6 +31,7 @@ use function rand;
 use function str_shuffle;
 use function strlen;
 use function substr;
+
 use const false;
 use const true;
 
