@@ -3,7 +3,7 @@
     "description": "Authentication adapters for common use cases.",
     "type": "library",
     "license": "Unlicense",
-    "homepage": "https://git.cathedral.co.za:3000/inanepain/auth",
+    "homepage": "https://github.com/inanepain/auth",
     "readme": "README.adoc",
     "authors": [
         {
@@ -14,7 +14,7 @@
     ],
     "support": {
         "email": "philip@cathedral.co.za",
-        "issues": "https://git.cathedral.co.za:3000/inanepain/auth/issues"
+        "issues": "https://github.com/inanepain/auth/issues"
     },
     "keywords": [
         "inane",
@@ -39,8 +39,9 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.5",
         "inanepain/quickrank": "*",
+        "inanepain/id-forge": "*",
         "inanepain/http": "*"
     },
     "require-dev": {},

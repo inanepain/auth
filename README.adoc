@@ -40,31 +40,36 @@ composer require {pkg-id}
 
 <<<
 
-== Two-Factor Authentication
+:leveloffset: +1
+
+= Two-Factor Authentication
 
 Generating and verifying tokens and pins.
 
-=== Generate Token
+== Generate Token
 
 [source,php]
 ----
-$token = new \Inane\Authentication\TwoFactor\Token('Inane');
+$token = new \Inane\Auth\TwoFactor\Token('Inane');
 echo "$token";
 ----
 
-=== Verify OTP
+== Verify OTP
 
 [source,php]
 ----
-$otp = new \Inane\Authentication\TwoFactor\OneTimePin($token);
+$otp = new \Inane\Auth\TwoFactor\OneTimePin($token);
 $valid = $otp->verifyOTP('612777');
 ----
 
-=== QRCode URL
+== QRCode URL
 
 [source,php]
 ----
-$imgUrl = $token->getQRCodeUrl();
+// OTP URL (otpauth://)
+$otpUrl = $token->getOTPUrl();
 // OR
 $imgBase64 = $token->getImageBase64();
 ----
+
+:leveloffset!:

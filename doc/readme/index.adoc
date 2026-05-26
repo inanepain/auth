@@ -30,31 +30,4 @@ include::part/install.adoc[leveloffset=+1]
 
 <<<
 
-== Two-Factor Authentication
-
-Generating and verifying tokens and pins.
-
-=== Generate Token
-
-[source,php]
-----
-$token = new \Inane\Authentication\TwoFactor\Token('Inane');
-echo "$token";
-----
-
-=== Verify OTP
-
-[source,php]
-----
-$otp = new \Inane\Authentication\TwoFactor\OneTimePin($token);
-$valid = $otp->verifyOTP('612777');
-----
-
-=== QRCode URL
-
-[source,php]
-----
-$imgUrl = $token->getQRCodeUrl();
-// OR
-$imgBase64 = $token->getImageBase64();
-----
+include::part/two-factor.adoc[leveloffset=+1]

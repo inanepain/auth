@@ -24,15 +24,12 @@ declare(strict_types=1);
 
 namespace Inane\Auth\TwoFactor;
 
-use Exception;
-
 use function chr;
 use function floor;
 use function hash_hmac;
 use function microtime;
 use function ord;
 use function pack;
-use function pow;
 use function preg_match;
 use function str_pad;
 use function strlen;
@@ -160,7 +157,7 @@ class OneTimePin {
      * @throws \Exception
      */
     public function getOTP(): string {
-        return $this->oathOTP(self::base32Decode($this->getToken()->getToken()), self::getTimestamp());
+        return $this->oathOTP(self::base32Decode($this->getToken()->token), self::getTimestamp());
     }
 
     /**
@@ -172,7 +169,7 @@ class OneTimePin {
      * @throws \Exception
      */
     public function verifyOTP(string $otp): bool {
-        return static::verifyKey($this->getToken()->getToken(), $otp);
+        return static::verifyKey($this->getToken()->token, $otp);
     }
 
     /**
@@ -181,11 +178,11 @@ class OneTimePin {
      * @param string $b32
      *
      * @return string
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     private static function base32Decode(string $b32): string {
         $b32 = strtoupper($b32);
-        if (! preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32)) throw new Exception('Invalid characters in the base32 string.');
+        if (! preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32)) throw new \RuntimeException('Invalid characters in the base32 string.');
 
         $l = strlen($b32);
         $n = 0;
@@ -193,12 +190,12 @@ class OneTimePin {
         $binary = '';
 
         for ($i = 0; $i < $l; $i++) {
-            $n = $n << 5; // Move buffer left by 5 to make room
-            $n = $n + static::lut[$b32[$i]]; // Add value into buffer
-            $j = $j + 5; // Keep track of number of bits in buffer
+            $n <<= 5;                        // Move buffer left by 5 to make room
+            $n += static::lut[$b32[$i]];     // Add value into buffer
+            $j += 5;                         // Keep track of number of bits in buffer
 
             if ($j >= 8) {
-                $j = $j - 8;
+                $j -= 8;
                 $binary .= chr(($n & (0xFF << $j)) >> $j);
             }
         }
@@ -222,16 +219,16 @@ class OneTimePin {
      * @param float  $counter - Timestamp as returned by getTimestamp.
      *
      * @return string OTP
-     * @throws \Exception
+     * @throws \RuntimeException
      */
     private static function oathOTP(string $key, float $counter): string {
-        if (strlen($key) < 8) throw new Exception('Secret key is too short. Must be at least 16 base 32 characters');
+        if (strlen($key) < 8) throw new \RuntimeException('Secret key is too short. Must be at least 16 base 32 characters');
 
         $bin_counter = pack('N*', 0) . pack('N*', $counter); // Counter must be 64-bit int
         $hash = hash_hmac('sha1', $bin_counter, $key, true);
 
         $t = static::oathTruncate($hash);
-        return str_pad("$t", static::OTP_LENGTH, '0', STR_PAD_LEFT);
+        return str_pad((string)$t, static::OTP_LENGTH, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -244,7 +241,7 @@ class OneTimePin {
     private static function oathTruncate(string $hash): int {
         $offset = ord($hash[19]) & 0xf;
 
-        return (((ord($hash[$offset]) & 0x7f) << 24) | ((ord($hash[$offset + 1]) & 0xff) << 16) | ((ord($hash[$offset + 2]) & 0xff) << 8) | (ord($hash[$offset + 3]) & 0xff)) % pow(10, static::OTP_LENGTH);
+        return (((ord($hash[$offset]) & 0x7f) << 24) | ((ord($hash[$offset + 1]) & 0xff) << 16) | ((ord($hash[$offset + 2]) & 0xff) << 8) | (ord($hash[$offset + 3]) & 0xff)) % (10 ** static::OTP_LENGTH);
     }
 
     /**
@@ -265,7 +262,7 @@ class OneTimePin {
 
         $binarySeed = static::base32Decode($b32seed);
 
-        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) if (static::oathOTP($binarySeed, $ts) == $key) return true;
+        for ($ts = $timeStamp - $window; $ts <= $timeStamp + $window; $ts++) if (static::oathOTP($binarySeed, $ts) === $key) return true;
 
         return false;
     }

@@ -10,29 +10,32 @@
  *
  * PHP version 8.5
  *
- * @author Philip Michael Raab<philip@cathedral.co.za>
- * @package inanepain\ auth
+ * @author   Philip Michael Raab<philip@cathedral.co.za>
+ * @package  inanepain\ auth
  * @category auth
  *
- * @license UNLICENSE
- * @license https://unlicense.org/UNLICENSE UNLICENSE
+ * @license  UNLICENSE
+ * @license  https://unlicense.org/UNLICENSE UNLICENSE
  *
  * _version_ $version
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Inane\Auth\TwoFactor;
 
+use Inane\IdForge\Config\Characters;
 use Inane\QR\QRObject;
+use Random\RandomException;
 use Stringable;
 
-use function rand;
+use function clamp;
+use function random_int;
+use function rawurlencode;
+use function sprintf;
 use function str_shuffle;
 use function strlen;
-use function substr;
 
-use const false;
 use const true;
 
 /**
@@ -40,67 +43,31 @@ use const true;
  *
  * Create a new TwoFactor Token (secret).
  *
- * @version 0.2.0
+ * @version 0.3.0
  */
 class Token implements Stringable {
-    #region Constants
-    /**
-     * lower case alpha characters
-     *
-     * @var string abcdefghijklmnopqrstuvwxyz
-     */
-    protected const string alpha = 'abcdefghijklmnopqrstuvwxyz';
-
-    /**
-     * UPPER CASE ALPHA CHARACTERS
-     *
-     * @var string ABCDEFGHIJKLMNOPQRSTUVWXYZ
-     */
-    protected const string alphaUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    /**
-     * numeric characters
-     *
-     * @var string 0123456789
-     */
-    protected const string numeric = '234567';
-
-    /**
-     * special characters
-     *
-     * @var string .-+=_,!@$#*%<>[]{}
-     */
-    protected const string special = '.-+=_,!@$#*%<>[]{}';
-    #endregion Constants
-
     #region Character Flags
     /**
      * Use alpha chars
      *
      * @var bool
      */
-    protected(set) bool $useAlpha = true;
+    public bool $useAlpha = true;
 
     /**
      * Use upper alpha chars
      *
      * @var bool
      */
-    protected(set) bool $useAlphaUpper = true;
+    public bool $useAlphaUpper = true;
 
     /**
      * Use numeric chars
      *
      * @var bool
      */
-    protected(set) bool $useNumeric = true;
+    public bool $useNumeric = true;
 
-    /**
-     * Use special chars
-     *
-     * @var bool
-     */
-    protected(set) bool $useSpecial = false;
     #endregion Character Flags
 
     #region Settings
@@ -116,16 +83,27 @@ class Token implements Stringable {
      *
      * @var int
      */
-    protected int $length = 32;
+    public int $length = 32 {
+        get => $this->length;
+        set => $this->length = clamp($value, 16, 32);
+    }
+
     #endregion Settings
 
     /**
-     * Token
+     * Token property accessor and mutator.
      *
-     * @var string
+     * When accessed, it returns the current token value. If the token is not set,
+     * it generates a new token and assigns it before returning.
+     * When mutated, it assigns the provided value to the token.
+     *
+     * @var string|null
      */
-    private string $token {
-        get => isset($this->token) ? $this->token : ($this->token = $this->generateToken());
+    protected(set) string $token {
+        /**
+         * @throws RandomException
+         */
+        get => $this->token ?? $this->token = $this->generateToken();
         set => $this->token = $value;
     }
 
@@ -133,17 +111,21 @@ class Token implements Stringable {
      * Two-Factor Authentication Token
      *
      * @param string|null $token if null a new random token will be generated.
-     * @param string $name token name (default: Unknown).
+     * @param string      $name  token name (default: Unknown).
      */
     public function __construct(
         /**
          * Token
          */
-        ?string $token = null,
+        ?string                $token = null,
         /**
          * Token Name
          */
-        private(set) string $name = 'Unknown',
+        private(set) string    $name = 'Unknown',
+        /**
+         * Token Account
+         */
+        public readonly string $issuer = 'Inane',
     ) {
         if ($token) $this->token = $token;
     }
@@ -154,86 +136,6 @@ class Token implements Stringable {
      * @return string Token
      */
     public function __toString(): string {
-        return $this->getToken();
-    }
-
-    /**
-     * Sets value for length
-     *
-     * @param int $length default: 16
-     *
-     * @return static
-     */
-    public function length(int $length = 16): static {
-        if ($length > 7 && $length < 21) $this->length = $length;
-
-        return $this;
-    }
-
-    /**
-     * Set value for useAlpha
-     *
-     * @param bool $useAlpha default: true
-     *
-     * @return static
-     */
-    public function useAlpha(bool $useAlpha = true): static {
-        $this->chars = null;
-        $this->useAlpha = $useAlpha;
-
-        return $this;
-    }
-
-    /**
-     * Set value for useAlphaUpper
-     *
-     * @param bool $useAlphaUpper default: true
-     *
-     * @return static
-     */
-    public function useAlphaUpper(bool $useAlphaUpper = true): static {
-        $this->chars = null;
-        $this->useAlphaUpper = $useAlphaUpper;
-
-        return $this;
-    }
-
-    /**
-     * Set value for useNumeric
-     *
-     * @param bool $useNumeric default: true
-     *
-     * @return static
-     */
-    public function useNumeric(bool $useNumeric = true): static {
-        $this->chars = null;
-        $this->useNumeric = $useNumeric;
-
-        return $this;
-    }
-
-    /**
-     * Set value for useSpecial
-     *
-     * @param bool $useSpecial default: false
-     *
-     * @return static
-     */
-    public function useSpecial(bool $useSpecial = false): static {
-        $this->chars = null;
-        $this->useSpecial = $useSpecial;
-
-        return $this;
-    }
-
-    /**
-     * Get token
-     *
-     * Generating a new one if required.
-     *
-     * @return string token
-     */
-    public function getToken(): string {
         return $this->token;
     }
 
@@ -251,15 +153,6 @@ class Token implements Stringable {
     }
 
     /**
-     * Get Token Name
-     *
-     * @return string the $name
-     */
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
      * Set Token Name
      *
      * @param string $name
@@ -268,6 +161,7 @@ class Token implements Stringable {
      */
     public function setName(string $name): static {
         $this->name = $name;
+
         return $this;
     }
 
@@ -280,25 +174,30 @@ class Token implements Stringable {
         if ($this->chars === null) {
             $this->chars = '';
 
-            if ($this->useAlpha) $this->chars .= self::alpha;
-            if ($this->useAlphaUpper) $this->chars .= self::alphaUpper;
-            if ($this->useNumeric) $this->chars .= self::numeric;
-            if ($this->useSpecial) $this->chars .= self::special;
+            $mask = 0;
+            if ($this->useAlpha) $mask = Characters::useLower->addTo($mask);
+            if ($this->useAlphaUpper) $mask = Characters::useUPPER->addTo($mask);
+            if ($this->useNumeric) $mask = Characters::useNumeric->addTo($mask);
+
+            $this->chars = Characters::base32($mask);
         }
+
         return $this->chars;
     }
 
     /**
-     * Generate Token
+     * Generates a random token based on the specified character set and length.
      *
-     * @return string token
+     * @return string Generated token
+     *
+     * @throws RandomException If it was not possible to gather sufficient entropy for random_int()
      */
     public function generateToken(): string {
         $chars = $this->chars();
         $len = strlen($chars);
         $pw = '';
 
-        for ($i = 0; $i < $this->length; $i++) $pw .= substr($chars, rand(0, $len - 1), 1);
+        for($i = 0; $i < $this->length; $i++) $pw .= $chars[random_int(0, $len - 1)];
 
         $this->token = str_shuffle($pw);
 
@@ -306,12 +205,23 @@ class Token implements Stringable {
     }
 
     /**
-     * Token (secret) QRCode url
+     * Generates the OTP URL for the user.
      *
-     * @return string the QRCode url
+     * @return string OTP URL
      */
-    protected function getQRCodeUrl(): string {
-        return 'https://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
+    public function getOTPUrl(): string {
+        $username = $this->name; // or username
+        $issuer = rawurlencode($this->issuer);
+        $secret = $this->token; // uppercase A-Z2-7, no = padding
+
+        $label = $issuer . ':' . rawurlencode($username);
+
+        return sprintf(
+            'otpauth://totp/%s?secret=%s&issuer=%s',
+            $label,
+            rawurlencode($secret),
+            $issuer,
+        );
     }
 
     /**
@@ -320,22 +230,6 @@ class Token implements Stringable {
      * @return string base64 string of QRCode
      */
     public function getImageBase64(): string {
-        $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
-        return new QRObject($url)->getImageBase64();
-        
-        $issuer = $_ENV['title'];
-    		$account = $this->getName(); // or username
-    		$secret = $this->getToken(); // uppercase A-Z2-7, no = padding
-
-    		$label = rawurlencode($issuer) . ':' . rawurlencode($account);
-
-    		$uri = sprintf(
-    			'otpauth://totp/%s?secret=%s&issuer=%s',
-    			$label,
-    			rawurlencode($secret),
-    			rawurlencode($_ENV['domain'])
-    		);
-
-    		return new QRObject($uri)->getImageBase64();
+        return new QRObject($this->getOTPUrl())->getImageBase64();
     }
 }
