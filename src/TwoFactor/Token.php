@@ -322,5 +322,20 @@ class Token implements Stringable {
     public function getImageBase64(): string {
         $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
         return new QRObject($url)->getImageBase64();
+        
+        $issuer = $_ENV['title'];
+    		$account = $this->getName(); // or username
+    		$secret = $this->getToken(); // uppercase A-Z2-7, no = padding
+
+    		$label = rawurlencode($issuer) . ':' . rawurlencode($account);
+
+    		$uri = sprintf(
+    			'otpauth://totp/%s?secret=%s&issuer=%s',
+    			$label,
+    			rawurlencode($secret),
+    			rawurlencode($_ENV['domain'])
+    		);
+
+    		return new QRObject($uri)->getImageBase64();
     }
 }
