@@ -8,7 +8,7 @@
  * $Id$
  * $Date$
  *
- * PHP version 8.4
+ * PHP version 8.5
  *
  * @author Philip Michael Raab<philip@cathedral.co.za>
  * @package inanepain\ auth
@@ -24,15 +24,14 @@ declare(strict_types=1);
 
 namespace Inane\Auth\TwoFactor;
 
-use QRcode;
+use Inane\QR\QRObject;
 use Stringable;
 
-use function is_bool;
-use function is_numeric;
 use function rand;
 use function str_shuffle;
 use function strlen;
 use function substr;
+
 use const false;
 use const true;
 
@@ -47,28 +46,28 @@ class Token implements Stringable {
     #region Constants
     /**
      * lower case alpha characters
-     * 
+     *
      * @var string abcdefghijklmnopqrstuvwxyz
      */
     protected const string alpha = 'abcdefghijklmnopqrstuvwxyz';
 
     /**
      * UPPER CASE ALPHA CHARACTERS
-     * 
+     *
      * @var string ABCDEFGHIJKLMNOPQRSTUVWXYZ
      */
     protected const string alphaUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * numeric characters
-     * 
+     *
      * @var string 0123456789
      */
-    protected const string numeric = '0123456789';
+    protected const string numeric = '234567';
 
     /**
      * special characters
-     * 
+     *
      * @var string .-+=_,!@$#*%<>[]{}
      */
     protected const string special = '.-+=_,!@$#*%<>[]{}';
@@ -117,12 +116,12 @@ class Token implements Stringable {
      *
      * @var int
      */
-    protected int $length = 16;
+    protected int $length = 32;
     #endregion Settings
 
     /**
      * Token
-     * 
+     *
      * @var string
      */
     private string $token {
@@ -131,7 +130,7 @@ class Token implements Stringable {
     }
 
     /**
-     * Two Factor Authentication Token
+     * Two-Factor Authentication Token
      *
      * @param string|null $token if null a new random token will be generated.
      * @param string $name token name (default: Unknown).
@@ -240,7 +239,7 @@ class Token implements Stringable {
 
     /**
      * Set Token
-     * 
+     *
      * @param string $token
      *
      * @return static
@@ -262,7 +261,7 @@ class Token implements Stringable {
 
     /**
      * Set Token Name
-     * 
+     *
      * @param string $name
      *
      * @return static the $name
@@ -312,18 +311,31 @@ class Token implements Stringable {
      * @return string the QRCode url
      */
     protected function getQRCodeUrl(): string {
-        $url = 'http://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
-
-        return $url;
+        return 'https://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
     }
 
     /**
-     * QRCode as base64 image
+     * QRCode as a base64 image
      *
      * @return string base64 string of QRCode
      */
     public function getImageBase64(): string {
-	    $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
-		return new \Inane\QR\QRObject($url)->getImageBase64();
+        $url = 'otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
+        return new QRObject($url)->getImageBase64();
+        
+        $issuer = $_ENV['title'];
+    		$account = $this->getName(); // or username
+    		$secret = $this->getToken(); // uppercase A-Z2-7, no = padding
+
+    		$label = rawurlencode($issuer) . ':' . rawurlencode($account);
+
+    		$uri = sprintf(
+    			'otpauth://totp/%s?secret=%s&issuer=%s',
+    			$label,
+    			rawurlencode($secret),
+    			rawurlencode($_ENV['domain'])
+    		);
+
+    		return new QRObject($uri)->getImageBase64();
     }
 }
