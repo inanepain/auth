@@ -45,22 +45,22 @@ use const true;
 /**
  * OneTimePin
  *
- * Validate a otp pin against a Token (secret).
+ * Validate an otp pin against a Token (secret).
  *
  * @version 0.3.0
  */
 class OneTimePin {
     /**
-     * Amount of seconds pin is valid on each side of expiry time.
+     * The number of seconds pin is valid on each side of expiry time.
      *
      * I.E.: OTP is valid for two times OTP_REGENERATION
      */
-    private const OTP_REGENERATION = 30;
+    private const int OTP_REGENERATION = 30;
 
     /**
      * Length of the pin
      */
-    private const OTP_LENGTH = 6;
+    private const int OTP_LENGTH = 6;
 
     /**
      * Token
@@ -156,19 +156,20 @@ class OneTimePin {
      * Get one time pin
      *
      * @since 0.3.0
-     *
      * @return string the current one time pin
+     * @throws \Exception
      */
     public function getOTP(): string {
         return $this->oathOTP(self::base32Decode($this->getToken()->getToken()), self::getTimestamp());
     }
 
     /**
-     * Verifies user's otp against current timestamp
+     * Verifies user's otp against the current timestamp
      *
      * @param string $otp - User specified key
      *
      * @return boolean $otp validity
+     * @throws \Exception
      */
     public function verifyOTP(string $otp): bool {
         return static::verifyKey($this->getToken()->getToken(), $otp);
@@ -180,10 +181,11 @@ class OneTimePin {
      * @param string $b32
      *
      * @return string
+     * @throws \Exception
      */
     private static function base32Decode(string $b32): string {
         $b32 = strtoupper($b32);
-        if (! preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32, $match)) throw new \Exception('Invalid characters in the base32 string.');
+        if (! preg_match('/^[ABCDEFGHIJKLMNOPQRSTUVWXYZ234567]+$/', $b32)) throw new Exception('Invalid characters in the base32 string.');
 
         $l = strlen($b32);
         $n = 0;
@@ -205,7 +207,7 @@ class OneTimePin {
     }
 
     /**
-     * Returns current timestamp divided by KEY_REGENERATION period
+     * Returns the current timestamp divided by KEY_REGENERATION period
      *
      * @return float
      */
@@ -216,10 +218,11 @@ class OneTimePin {
     /**
      * Takes secret key and timestamp and returns one time password
      *
-     * @param string $key - Secret key in binary form.
-     * @param float $counter - Timestamp as returned by getTimestamp.
+     * @param string $key     - Secret key in binary form.
+     * @param float  $counter - Timestamp as returned by getTimestamp.
      *
      * @return string OTP
+     * @throws \Exception
      */
     private static function oathOTP(string $key, float $counter): string {
         if (strlen($key) < 8) throw new Exception('Secret key is too short. Must be at least 16 base 32 characters');
@@ -228,7 +231,7 @@ class OneTimePin {
         $hash = hash_hmac('sha1', $bin_counter, $key, true);
 
         $t = static::oathTruncate($hash);
-        return str_pad("{$t}", static::OTP_LENGTH, '0', STR_PAD_LEFT);
+        return str_pad("$t", static::OTP_LENGTH, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -241,11 +244,11 @@ class OneTimePin {
     private static function oathTruncate(string $hash): int {
         $offset = ord($hash[19]) & 0xf;
 
-        return (((ord($hash[$offset + 0]) & 0x7f) << 24) | ((ord($hash[$offset + 1]) & 0xff) << 16) | ((ord($hash[$offset + 2]) & 0xff) << 8) | (ord($hash[$offset + 3]) & 0xff)) % pow(10, static::OTP_LENGTH);
+        return (((ord($hash[$offset]) & 0x7f) << 24) | ((ord($hash[$offset + 1]) & 0xff) << 16) | ((ord($hash[$offset + 2]) & 0xff) << 8) | (ord($hash[$offset + 3]) & 0xff)) % pow(10, static::OTP_LENGTH);
     }
 
     /**
-     * Verifies user input key against current timestamp
+     * Verifies a user input key against the current timestamp
      *
      * @param string $b32seed      - seed
      * @param string $key          - user specified key
@@ -253,6 +256,7 @@ class OneTimePin {
      * @param bool   $useTimeStamp - use timestamp
      *
      * @return bool
+     * @throws \Exception
      */
     private static function verifyKey(string $b32seed, string $key, int $window = 4, bool $useTimeStamp = true): bool {
         $timeStamp = static::getTimestamp();

@@ -63,7 +63,7 @@ class Token implements Stringable {
      *
      * @var string 0123456789
      */
-    protected const string numeric = '0123456789';
+    protected const string numeric = '234567';
 
     /**
      * special characters
@@ -116,7 +116,7 @@ class Token implements Stringable {
      *
      * @var int
      */
-    protected int $length = 16;
+    protected int $length = 32;
     #endregion Settings
 
     /**
@@ -130,7 +130,7 @@ class Token implements Stringable {
     }
 
     /**
-     * Two Factor Authentication Token
+     * Two-Factor Authentication Token
      *
      * @param string|null $token if null a new random token will be generated.
      * @param string $name token name (default: Unknown).
@@ -311,9 +311,7 @@ class Token implements Stringable {
      * @return string the QRCode url
      */
     protected function getQRCodeUrl(): string {
-        $url = 'http://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
-
-        return $url;
+        return 'https://www.google.com/chart?chs=200x200&chld=M|0&cht=qr&chl=otpauth://totp/Inane/' . $this->getName() . '?secret=' . $this->getToken();
     }
 
     /**
