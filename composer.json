@@ -40,9 +40,9 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=8.5",
-        "inanepain/quickrank": "*",
-        "inanepain/id-forge": "*",
-        "inanepain/http": "*"
+        "inanepain/quickrank": ">=0.1.0",
+        "inanepain/id-forge": ">=0.2.0",
+        "inanepain/http": ">=0.4.0"
     },
     "require-dev": {},
     "scripts": {

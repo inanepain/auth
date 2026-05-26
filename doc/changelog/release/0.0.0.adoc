@@ -11,7 +11,3 @@
 :sectnums!:
 :toc: auto
 :sectanchors:
-
-* update: General code optimisations and restructuring.
-* update: documentation.
-* update: `Token` otp url updated.
