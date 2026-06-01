@@ -11,7 +11,7 @@
  * PHP version 8.5
  *
  * @author Philip Michael Raab<philip@cathedral.co.za>
- * @package inanepain\ auth
+ * @package inanepain\auth
  * @category auth
  *
  * @license UNLICENSE
