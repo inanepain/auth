@@ -1,0 +1,6 @@
+= 1.3.0 (2026 Jun 08)
+:revnumber: 1.3.0
+:revdate: 2026-06-08
+
+* update: PHP8.5 compatibility and functionality usage.
+* update: Documentation.
