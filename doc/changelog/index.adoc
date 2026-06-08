@@ -1,12 +1,10 @@
-= Changelog: Auth
+= Changelog: inanepain/auth
 :author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
+:email: <philip@inane.co.za>
 :description: Authentication adapters for common use cases.
 :keywords: inane, inanepain, library, auth, authentication, OTP, two-factor, 2FA
-:revnumber: 1.1.0
-:revdate: 2025-11-20
-:revremark: -dev
-// :version-label: Version
+:revnumber: 1.3.0
+:revdate: 2026-06-08
 :copyright: Unlicense
 :experimental:
 :hide-uri-scheme:
@@ -18,6 +16,7 @@
 
 == History
 
-include::./release/0.0.0.adoc[leveloffset=+2]
+include::./release/1.3.0.adoc[leveloffset=+2]
+include::./release/1.2.0.adoc[leveloffset=+2]
 include::./release/1.1.0.adoc[leveloffset=+2]
 include::./release/1.0.0.adoc[leveloffset=+2]

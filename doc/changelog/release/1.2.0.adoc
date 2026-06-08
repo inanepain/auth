@@ -1,0 +1,7 @@
+= 1.2.0 (2026 May 26)
+:revnumber: 1.2.0
+:revdate: 2026-05-26
+
+* update: General code optimisations and restructuring.
+* update: documentation.
+* update: `Token` otp url updated.

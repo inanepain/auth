@@ -1,0 +1,29 @@
+= Two-Factor Authentication
+
+Generating and verifying tokens and pins.
+
+== Generate Token
+
+[source,php]
+----
+$token = new \Inane\Auth\TwoFactor\Token('Inane');
+echo "$token";
+----
+
+== Verify OTP
+
+[source,php]
+----
+$otp = new \Inane\Auth\TwoFactor\OneTimePin($token);
+$valid = $otp->verifyOTP('612777');
+----
+
+== QRCode URL
+
+[source,php]
+----
+// OTP URL (otpauth://)
+$otpUrl = $token->getOTPUrl();
+// OR
+$imgBase64 = $token->getImageBase64();
+----

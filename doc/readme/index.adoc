@@ -1,10 +1,11 @@
 = inanepain/auth image:./icon.png[title=inanepain/auth,25]
+// tag::tagConfig[]
 :author: Philip Michael Raab
 :email: <philip@cathedral.co.za>
 :description: Authentication adapters for common use cases.
 :keywords: inane, inanepain, library, auth, authentication, OTP, two-factor, 2FA
-:revnumber: 1.1.0
-:revdate: 2022-11-20
+:revnumber: 1.3.0
+:revdate: 2026-06-08
 :copyright: Unlicense
 :experimental:
 :hide-uri-scheme:
@@ -17,6 +18,7 @@
 :pkg-vendor: inanepain
 :pkg-name: auth
 :pkg-id: {pkg-vendor}/{pkg-name}
+// end::tagConfig[]
 
 == image:./icon.png[title={pkg-id},25] {pkg-id}
 
@@ -30,31 +32,4 @@ include::part/install.adoc[leveloffset=+1]
 
 <<<
 
-== Two-Factor Authentication
-
-Generating and verifying tokens and pins.
-
-=== Generate Token
-
-[source,php]
-----
-$token = new \Inane\Authentication\TwoFactor\Token('Inane');
-echo "$token";
-----
-
-=== Verify OTP
-
-[source,php]
-----
-$otp = new \Inane\Authentication\TwoFactor\OneTimePin($token);
-$valid = $otp->verifyOTP('612777');
-----
-
-=== QRCode URL
-
-[source,php]
-----
-$imgUrl = $token->getQRCodeUrl();
-// OR
-$imgBase64 = $token->getImageBase64();
-----
+include::part/two-factor.adoc[leveloffset=+1]
