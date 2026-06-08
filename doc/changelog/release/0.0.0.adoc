@@ -1,13 +1,3 @@
-= 2.0.0-dev (2026 Xxx xx)
-:author: Philip Michael Raab
-:email: <philip@cathedral.co.za>
-:revnumber: 2.0.0
+= 1.4.0-dev (2026 Xxx xx)
+:revnumber: 1.4.0-dev
 :revdate: 2026-xx-xx
-:copyright: Unlicense
-:experimental:
-:hide-uri-scheme:
-:icons: font
-:source-highlighter: highlight.js
-:sectnums!:
-:toc: auto
-:sectanchors:
