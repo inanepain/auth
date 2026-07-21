@@ -10,17 +10,17 @@
  *
  * PHP version 8.5
  *
- * @author Philip Michael Raab<philip@cathedral.co.za>
- * @package inanepain\auth
+ * @author   Philip Michael Raab<philip@cathedral.co.za>
+ * @package  inanepain\auth
  * @category auth
  *
- * @license UNLICENSE
- * @license https://unlicense.org/UNLICENSE UNLICENSE
+ * @license  UNLICENSE
+ * @license  https://unlicense.org/UNLICENSE UNLICENSE
  *
  * _version_ $version
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Inane\Auth\Http;
 
@@ -29,6 +29,7 @@ use Stringable;
 use function array_combine;
 use function array_pop;
 use function base64_decode;
+use function base64_encode;
 use function explode;
 use function is_null;
 use function str_contains;
@@ -55,6 +56,12 @@ class BasicAuth implements Stringable {
      */
     protected string $password;
 
+    /**
+     * Constructs a new instance of the class with an optional username and password.
+     *
+     * @param ?string $username The username to set, if provided.
+     * @param ?string $password The password to set, if provided.
+     */
     public function __construct(?string $username = null, ?string $password = null) {
         if (!is_null($username)) $this->setUsername($username);
         if (!is_null($password)) $this->setPassword($password);
@@ -79,12 +86,22 @@ class BasicAuth implements Stringable {
      * @return null|array username, password array or null on failure
      */
     public static function decodeBasicAuth(string $token): ?array {
-        $token = @array_pop(explode(' ', $token));
+        if (!str_contains($token, ' ')) {
+            return null;
+        }
+
+        $credentials = explode(' ', $token);
+        $token = array_pop($credentials);
         $decoded = base64_decode($token);
 
-        if (! str_contains($decoded, ':')) return null;
+        if (!str_contains($decoded, ':')) {
+            return null;
+        }
 
-        return @array_combine(['username', 'password'], explode(':', $decoded, 2));
+        return @array_combine([
+            'username',
+            'password',
+        ], explode(':', $decoded, 2));
     }
 
     /**
@@ -100,7 +117,7 @@ class BasicAuth implements Stringable {
     }
 
     /**
-     * Returns token when used as string
+     * Returns token when used as a string
      *
      * @return string token
      */
@@ -122,10 +139,11 @@ class BasicAuth implements Stringable {
      *
      * @param string $username username
      *
-     * @return \Inane\Auth\Http\BasicAuth this
+     * @return BasicAuth this
      */
     public function setUsername(string $username): self {
         $this->username = $username;
+
         return $this;
     }
 
@@ -143,10 +161,11 @@ class BasicAuth implements Stringable {
      *
      * @param string $password password
      *
-     * @return \Inane\Auth\Http\BasicAuth this
+     * @return BasicAuth this
      */
     public function setPassword(string $password): self {
         $this->password = $password;
+
         return $this;
     }
 
