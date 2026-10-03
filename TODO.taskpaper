@@ -1,2 +1,3 @@
 inanepain/auth:
-Authentication adapters for common use cases.
+	Authentication adapters for common use cases.
+	- git-attributes
